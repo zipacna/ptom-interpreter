@@ -1,3 +1,3 @@
-from ptom import Ptom
+from pton import Pton
 
-example = Ptom('test.ptom', 'load')
+example = Pton('test.pton', 'load')

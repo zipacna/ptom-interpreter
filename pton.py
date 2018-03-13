@@ -1,6 +1,6 @@
-class Ptom:
+class Pton:
     """
-    plaintext object markdown - a minimalistic textformat
+    plaintext object notation - a minimalistic textformat
     author: Jean Mattes
     author-uri: http://www.risingcode.net/
     """
