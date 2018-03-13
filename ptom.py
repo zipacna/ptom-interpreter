@@ -35,29 +35,39 @@ class Ptom:
         read the ptom file
         # TODO: handle \t (or 4 spaces) & \n
         """
-        self.handle = open(self.file, 'r')
-        self.ptom = self.handle.readlines()
-        for node in self.ptom:
-            for sep in ['\t', '    ']:
-                if sep in node:
-                    depth = node
-                    while isinstance(depth, list):
-                        # TODO: scan full range, replace 0 with all possibilities
-                        depth = depth[0]
-                    nodeop = node.replace(sep, '')
-                    self.nodenew = [nodeop]
-                else:
-                    self.nodenew = '-'
-        print(self.nodenew)
-        if self.raw == 0:
-            for line in self.ptom:
-                for sep in [self.tabsep, self.spacesep, self.newlinesep]:
-                    for sepn in ['\t', '\t', '\n']:
-                        line.replace(sep, sepn)
-        if isinstance(self.ptom, list):
-            print('\nLoading successful:', self.ptom)
-        else:
-            print('\nLoading failed')
+        try:
+            self.handle = open(self.file, 'r')
+            self.ptom = self.handle.readlines()
+            for node in self.ptom:
+                for sep in ['\t', '    ', '\n']:
+                    if sep in node:
+                        depth = node
+                        print('depth:', depth)
+                        while isinstance(depth, list):
+                            # TODO: scan full range, replace 0 with all possibilities
+                            if depth.__len__() == 1:
+                                depth = depth[0]
+                            else:
+                                raise OverflowError
+                        nodeop = node.replace(sep, '')
+                        self.nodenew = [nodeop]
+                    else:
+                        self.nodenew = '-'
+                print(self.nodenew)
+            if self.raw == 0:
+                for line in self.ptom:
+                    for sep in [self.tabsep, self.spacesep, self.newlinesep]:
+                        for sepn in ['\t', '\t', '\n']:
+                            line.replace(sep, sepn)
+            if isinstance(self.ptom, list):
+                print('\nLoading successful:', self.ptom)
+            else:
+                print('\nLoading failed')
+        except (FileNotFoundError, TypeError, OverflowError) as error:
+            print(error)
+            print('Error while fetching ptom object/file: File not found or not readable')
+            print('Error while traversing tree: Tree with no value/s, only key/s')
+            print('Error while traversing tree: Index unresolvable')
 
     def dump(self):
         """
